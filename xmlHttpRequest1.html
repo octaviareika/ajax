@@ -13,8 +13,9 @@
     <script>
         // ...
         function ajax(config){ // parametro vai ser um objeto
-            const xhr = new XMLHttpRequest();
-            xhr.open('GET', config.url, true) // abrir uma requisição do tipo get e config.url vai ser a url que queremos fazer a requisição e true vai ser a requisição assincrona
+            const xhr = new XMLHttpRequest();  // criando a requisição
+            console.log(xhr)
+            xhr.open(config.metodo, config.url, true) // abrir uma requisição do tipo get e config.url vai ser a url que queremos fazer a requisição e true vai ser a requisição assincrona
             xhr.onload = e => {
                 if (xhr.status === 200){
                     config.sucesso(xhr.response) // caso a requisição tenha sucesso
@@ -27,16 +28,11 @@
                 }
             }
 
-            xhr.send();
+            xhr.send(); // enviar a requisição
         }
 
-        ajax({ // passando um objeto como parâmetro
-            url: "dados/estados.json",
-            metodo: "get",
-            sucesso(resposta){
-                const estados = JSON.parse(resposta); // criar uma tabela usando a DOM
-
-                const linhas = estados.map((estado)=>{
+        function criandoTabela(estados){
+            const linhas = estados.map((estado)=>{
                     const tableRow = document.createElement('td');
 
                     tableRow.innerHTML = estado.id;
@@ -60,8 +56,18 @@
                 const tabela = document.createElement('table');
 
                 linhas.forEach(linha => {
-                    document.body.append(tabela)
-                })
+                    tabela.appendChild(linha);
+                });
+
+                document.body.appendChild(tabela);
+        }
+
+        ajax({ // passando um objeto como parâmetro
+            url: "dados/estados.json",
+            metodo: "get",
+            sucesso(resposta){
+                const estados = JSON.parse(resposta); // criar uma tabela usando a DOM
+                criandoTabela(estados);
 
                 
             },
@@ -71,5 +77,6 @@
                     document.body.appendChild(msg)
                 }
         })
-    </script>
-</body>
+        </script>
+    </body>
+</html>
