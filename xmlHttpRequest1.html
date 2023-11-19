@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='UTF-8'>
+    <title>XMLHttpRequest #01</title>
+    <link rel='stylesheet' href='css/estilo.css'>
+</head>
+
+<body class="conteudo exercicio">
+    <h1>Estados</h1>
+
+    <script>
+        // ...
+        function ajax(config){ // parametro vai ser um objeto
+            const xhr = new XMLHttpRequest();
+            xhr.open('GET', config.url, true) // abrir uma requisição do tipo get e config.url vai ser a url que queremos fazer a requisição e true vai ser a requisição assincrona
+            xhr.onload = e => {
+                if (xhr.status === 200){
+                    config.sucesso(xhr.response) // caso a requisição tenha sucesso
+                }
+                else if (xhr.status >= 400){ // se for maior que 400 vai exibir o erro
+                    config.erro({
+                        code: xhr.status,
+                        text: xhr.statusText
+                    })
+                }
+            }
+
+            xhr.send();
+        }
+
+        ajax({ // passando um objeto como parâmetro
+            url: "dados/estados.json",
+            metodo: "get",
+            sucesso(resposta){
+                const estados = JSON.parse(resposta); // criar uma tabela usando a DOM
+
+                const linhas = estados.map((estado)=>{
+                    const tableRow = document.createElement('td');
+
+                    tableRow.innerHTML = estado.id;
+
+                    const tdNome = document.createElement('td');
+                    tdNome.innerHTML = estado.nome;
+
+                    const tdSigla = document.createElement('td');
+                    tdSigla.innerHTML = estado.sigla;
+
+                    const tr = document.createElement('tr');
+                    
+                    tr.appendChild(tableRow);// do id
+                    tr.appendChild(tdNome);
+                    tr.appendChild(tdSigla);
+
+                    return tr;
+                    
+                });
+                
+                const tabela = document.createElement('table');
+
+                linhas.forEach(linha => {
+                    document.body.append(tabela)
+                })
+
+                
+            },
+
+            erro(e){
+                    const msg = document.createTextNode(`${e.code} ${e.text}`) // criar uma mensagem de erro
+                    document.body.appendChild(msg)
+                }
+        })
+    </script>
+</body>
