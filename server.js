@@ -4,9 +4,23 @@ const express = require('express');
 const app = express();
 
 app.use(express.static('.')); 
-/*app.use(bodyParser.urlencoded({
+app.use(bodyParser.urlencoded({
     extended : true
-}));*/
+}))
+
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({ // passa um objeto como parâmetro
+    destination: function(req, file, callback) { // parametros vao ser a requisição, o arquivo e a callbacks
+        callback(null, "./upload");
+
+    },
+
+    filename: function(req, res, erro){
+        
+    }
+})
 
 app.use(bodyParser.json()); // converte em objeto json
 
