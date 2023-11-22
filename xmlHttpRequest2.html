@@ -23,5 +23,19 @@
 
     <script>
         // ...
+        function ajaxUpload(config){ // objeto como configuração
+            const xhr = new XMLHttpRequest();
+            if (xhr.upload){
+                xhr.upload.onprogress = evento => {
+                    const atual = evento.loaded;
+                    const total = evento.total;
+                    const porcentagem = Math.floor(atual/total * 100)
+                    config.progresso({config, total, porcentagem})
+                }
+            }
+
+            xhr.open("post", config.url, true)
+            xhr.send(config.formData) // fazendo um post, enviando informações ao servidor
+            //no momento que vc seleciona o arquivo, voce faz upload
     </script>
 </body>
