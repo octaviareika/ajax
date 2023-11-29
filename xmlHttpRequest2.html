@@ -33,9 +33,23 @@
                     config.progresso({config, total, porcentagem})
                 }
             }
+        
 
             xhr.open("post", config.url, true)
             xhr.send(config.formData) // fazendo um post, enviando informações ao servidor
             //no momento que vc seleciona o arquivo, voce faz upload
+        
+        
+        }
+
+        const input = document.querySelector('input[name=arquivo]');
+
+        input.onchange = function(evento){
+            const arquivo = evento.target.files[0];
+            const formData = new FormData();
+            formData.append(evento.target.name, arquivo);
+
+            
+        }
     </script>
 </body>
