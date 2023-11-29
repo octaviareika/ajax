@@ -23,6 +23,17 @@ const storage = multer.diskStorage({ // passa um objeto como parâmetro
     }
 })
 
+const upload = multer({storage}).single('arquivo'); // single é um arquivo por vez
+
+app.post(   '/upload', (req, res) => {
+    upload(req, res, erro => { // requisicao, resposta e erro	
+        if(erro){
+            return res.end('Ocorreu um erro.') // res.end = retorna uma resposta
+        }
+        res.end('Concluído com sucesso.')
+    })
+})
+
 app.use(bodyParser.json()); // converte em objeto json
 
 app.get('/teste', (req, res) => res.send('Ok')); // quando o arquivo teste for invocado, manda uma resposta
